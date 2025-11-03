@@ -1,0 +1,62 @@
+import type { Metadata, Viewport } from "next";
+import { Inter, Source_Code_Pro } from "next/font/google";
+import { RootProvider } from "./rootProvider";
+import ConditionalLayout from "./components/layout/ConditionalLayout";
+import { minikitConfig } from "../minikit.config";
+import "./globals.css";
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+});
+
+const sourceCodePro = Source_Code_Pro({
+  variable: "--font-source-code-pro",
+  subsets: ["latin"],
+});
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: minikitConfig.miniapp.name,
+    description: minikitConfig.miniapp.description,
+    other: {
+      "fc:frame": JSON.stringify({
+        version: "next",
+        imageUrl: minikitConfig.miniapp.heroImageUrl,
+        button: {
+          title: `Launch ${minikitConfig.miniapp.name}`,
+          action: {
+            type: "launch_frame",
+            name: minikitConfig.miniapp.name,
+            url: minikitConfig.miniapp.homeUrl,
+            splashImageUrl: minikitConfig.miniapp.splashImageUrl,
+            splashBackgroundColor: minikitConfig.miniapp.splashBackgroundColor,
+          },
+        },
+      }),
+    },
+  };
+}
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className={`${inter.variable} ${sourceCodePro.variable}`}>
+        <RootProvider>
+          <ConditionalLayout>
+            {children}
+          </ConditionalLayout>
+        </RootProvider>
+      </body>
+    </html>
+  );
+}
