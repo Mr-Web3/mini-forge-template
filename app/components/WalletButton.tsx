@@ -10,13 +10,16 @@ import {
   WalletDropdownLink,
   WalletDropdownBasename,
 } from "@coinbase/onchainkit/wallet";
-import { Avatar, Name, Address, Identity } from "@coinbase/onchainkit/identity";
+import { Avatar, Name, Address } from "@coinbase/onchainkit/identity";
 import { useMiniAppContext } from "../hooks/useMiniAppContext";
 import { useNeynarUser } from "../hooks/useNeynarUser";
 import FundCardModal from "./FundCard";
+import ThemeToggle from "./ThemeToggle";
 
-export default function WalletButton() {
-  const { isConnected } = useAccount();
+export type WalletButtonProps = { externalIsConnected?: boolean };
+
+export default function WalletButton({ externalIsConnected }: WalletButtonProps) {
+  const { isConnected: wagmiIsConnected } = useAccount();
   const { isInMiniApp, isMobile, user: miniAppUser } = useMiniAppContext();
   const { user: neynarUser } = useNeynarUser(
     isInMiniApp && miniAppUser ? miniAppUser.fid : null
@@ -37,6 +40,7 @@ export default function WalletButton() {
     : miniAppUser;
 
   // Show mini app profile only when in mini app and connected
+  const isConnected = externalIsConnected ?? wagmiIsConnected;
   const showMiniAppProfile = isInMiniApp && displayUser && isConnected;
   
   // On mobile/mini app, only show profile image (hide name in button)
@@ -62,10 +66,10 @@ export default function WalletButton() {
         {/* Hide name on mobile/mini app when connected - it shows in dropdown */}
         {!hideNameInButton && <Name />}
       </ConnectWallet>
-      <WalletDropdown className="bg-black text-white rounded-md p-2">
+      <WalletDropdown className="bg-[var(--background)] text-[var(--foreground)] rounded-md p-2">
         {showMiniAppProfile ? (
           <div className="px-6 pt-3 pb-2">
-            <div className="flex items-center gap-3 mb-3">
+            <div className="flex items-center justify-between gap-3 mb-3">
               {displayUser.pfpUrl && (
                 <Image
                   src={displayUser.pfpUrl}
@@ -77,23 +81,24 @@ export default function WalletButton() {
               )}
               <div className="flex-1 min-w-0">
                 {displayUser.displayName && (
-                  <div className="font-semibold text-white truncate">
+                  <div className="font-semibold text-foreground truncate">
                     {displayUser.displayName}
                   </div>
                 )}
                 {displayUser.username && (
-                  <div className="text-sm text-gray-400 truncate">
+                  <div className="text-sm text-foreground/60 truncate">
                     @{displayUser.username}
                   </div>
                 )}
               </div>
+              <ThemeToggle compact />
             </div>
             {(displayUser.followers !== undefined ||
               displayUser.following !== undefined) && (
-              <div className="flex gap-4 text-sm text-gray-400 mt-2">
+              <div className="flex gap-4 text-sm text-foreground/60 mt-2">
                 {displayUser.followers !== undefined && (
                   <span>
-                    <span className="text-white font-medium">
+                    <span className="text-foreground font-medium">
                       {displayUser.followers.toLocaleString()}
                     </span>{" "}
                     followers
@@ -101,7 +106,7 @@ export default function WalletButton() {
                 )}
                 {displayUser.following !== undefined && (
                   <span>
-                    <span className="text-white font-medium">
+                    <span className="text-foreground font-medium">
                       {displayUser.following.toLocaleString()}
                     </span>{" "}
                     following
@@ -111,11 +116,18 @@ export default function WalletButton() {
             )}
           </div>
         ) : (
-          <Identity className="px-6 pt-3 pb-2" hasCopyAddressOnClick>
-            <Avatar />
-            <Name />
-            <Address />
-          </Identity>
+          <div className="px-6 pt-3 pb-2">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <Avatar />
+                <Name />
+              </div>
+              <ThemeToggle compact />
+            </div>
+            <div className="pl-8">
+              <Address />
+            </div>
+          </div>
         )}
         <WalletDropdownBasename />
         <WalletDropdownLink icon="wallet" href="https://keys.coinbase.com">

@@ -374,6 +374,25 @@
     --foreground: var(--color-foreground);
   }
 
+/* Explicit theme overrides via data attribute take precedence over system */
+html[data-theme='light'] {
+  --background: #ffffff;
+  --foreground: #171717;
+  --color-background: #ffffff;
+  --color-foreground: #171717;
+  --color-gray-200: #e5e7eb;
+  --color-gray-800: #1f2937;
+}
+
+html[data-theme='dark'] {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --color-background: #0a0a0a;
+  --color-foreground: #ededed;
+  --color-gray-200: #374151;
+  --color-gray-800: #f3f4f6;
+}
+
   @media (prefers-color-scheme: dark) {
     :root {
       --background: #0a0a0a;

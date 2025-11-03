@@ -72,7 +72,7 @@ export default function Home() {
               onClick={() =>
                 handleOpenUrl(
                   process.env.NEXT_PUBLIC_REPO_FORK_URL ||
-                    "https://github.com/Mr-Web3/basekit-starter-fork",
+                    "https://github.com/Mr-Web3/mini-forge-template",
                 )
               }
               className="inline-flex items-center gap-3 px-6 py-3 rounded-lg bg-[#0b55e9] text-white font-semibold shadow-lg hover:bg-[#0b55e9]/90 transition-opacity border border-[#0b55e9]"

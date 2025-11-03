@@ -22,8 +22,8 @@ export const minikitConfig = {
   },
   miniapp: {
     version: "1",
-    name: "Mini Template",
-    subtitle: "Mini Template",
+    name: "MiniForge",
+    subtitle: "MiniForge Template",
     description:
       "A complete starter template for building mini apps with Farcaster integration.",
     screenshotUrls: [

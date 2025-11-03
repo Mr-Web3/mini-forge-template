@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import WalletButton from "../WalletButton";
 import { usePathname } from "next/navigation";
+import ThemeToggle from "../ThemeToggle";
 
 export default function Header() {
   const pathname = usePathname();
@@ -79,8 +80,11 @@ export default function Header() {
             })}
           </nav>
 
-          {/* Wallet - Right */}
-          <div className="flex items-center">
+          {/* Wallet + Theme - Right */}
+          <div className="flex items-center gap-2">
+            <div className="hidden md:block">
+              <ThemeToggle />
+            </div>
             <WalletButton />
           </div>
         </div>
